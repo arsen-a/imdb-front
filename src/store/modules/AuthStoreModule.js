@@ -23,6 +23,7 @@ export const AuthStoreModule = {
         const response = await authService.register(credentials);
         context.commit("setRegisterErrors", null);
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user_id", response.data.user_id);
         return response;
       } catch (exception) {
         context.commit("setRegisterErrors", exception.response.data.errors);

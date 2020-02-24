@@ -8,11 +8,11 @@
     <form @submit.prevent="submit()">
       <div class="form-group">
         <label>E-mail</label>
-        <input type="email" class="form-control" required/>
+        <input v-model="credentials.email" type="email" class="form-control" required/>
       </div>
       <div class="form-group">
         <label>Password</label>
-        <input type="password" class="form-control" required />
+        <input v-model="credentials.password" type="password" class="form-control" required />
       </div>
       <button class="btn btn-primary" type="submit">Login</button>
     </form>
@@ -42,7 +42,7 @@ export default {
       login: "login"
     }),
     submit() {
-      this.login({ email: this.credentials.email, password: this.credentials.password }).then(() => {
+      this.login(this.credentials).then(() => {
           this.$router.push({ name: 'home' })
       });
     }
