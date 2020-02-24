@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid m-0 p-0">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <router-link class="navbar-brand" :to="{ name: 'home' }"><strong>Pocket IMDB</strong></router-link>
+      <router-link class="navbar-brand" :to="{ name: 'home' }">Pocket IMDB</router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -17,15 +17,18 @@
         <ul class="navbar-nav">
           <li class="nav-item active">
             <router-link class="nav-link" :to="{ name: 'home' }">
-              Home
+              <strong>Home</strong>
               <span class="sr-only">(current)</span>
             </router-link>
           </li>
-          <li class="nav-item">
+          <li v-if="!isUserLoggedIn" class="nav-item">
             <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
           </li>
-          <li class="nav-item">
+          <li v-if="!isUserLoggedIn" class="nav-item">
             <router-link class="nav-link" :to="{ name: 'register' }">Register</router-link>
+          </li>
+          <li v-if="isUserLoggedIn" class="nav-item">
+            <a class="nav-link" href="#" @click.prevent="logoutUser()">Logout</a>
           </li>
         </ul>
       </div>
@@ -34,8 +37,25 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
-  name: "Header"
+  name: "Header",
+  computed: {
+    ...mapGetters({
+      isUserLoggedIn: "isUserLoggedIn"
+    })
+  },
+  methods: {
+    ...mapActions({
+      logout: "logout"
+    }),
+    logoutUser() {
+      this.logout().then(() => {
+        this.$router.push({ name: "login" });
+      });
+    }
+  }
 };
 </script>
 

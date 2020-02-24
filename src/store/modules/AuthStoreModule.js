@@ -40,13 +40,17 @@ export const AuthStoreModule = {
         localStorage.setItem("token", response.data.token);
         return response;
       } catch (exception) {
-        context.commit("setLoginErrors", exception.response.data.message);
+        context.commit("setLoginErrors", exception.response.data.error);
       }
+    },
+    async logout(context) {
+      context.commit("setToken", null);
+      localStorage.removeItem("token");
     }
   },
   getters: {
     isUserLoggedIn(state) {
-        return !!state.token
+      return !!state.token;
     },
     registerErrors(state) {
       return state.registerErrors;
