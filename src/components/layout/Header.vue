@@ -22,6 +22,9 @@
             </router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
+          </li>
+          <li class="nav-item">
             <router-link class="nav-link" :to="{ name: 'register' }">Register</router-link>
           </li>
         </ul>
