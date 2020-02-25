@@ -1,31 +1,103 @@
 <template>
   <div class="container">
-    <div class="movie-container" v-for="movie in allMovies" :key="movie.id">
+    <nav>
+      <ul class="pagination">
+        <li v-if="currentPage !== 1" class="page-item">
+          <button class="page-link" @click="goPreviousPage()">Previous</button>
+        </li>
+        <li v-else class="page-item disabled">
+          <p class="page-link">Previous</p>
+        </li>
+        <li v-if="currentPage !== allMovies.last_page" class="page-item">
+          <button class="page-link" @click="goNextPage()">Next</button>
+        </li>
+        <li v-else class="page-item disabled">
+          <p class="page-link">Next</p>
+        </li>
+        <li v-if="currentPage !== allMovies.last_page" class="page-item">
+          <button class="page-link" @click="goLastPage()">Last</button>
+        </li>
+        <li v-else class="page-item disabled">
+          <p class="page-link">Last</p>
+        </li>
+        <li v-for="index in allMovies.last_page" :key="index" class="page-item">
+          <button
+            v-if="currentPage !== index"
+            class="page-link"
+            @click="fetchAllMovies(index)"
+          >{{ index }}</button>
+          <div v-else class="page-item disabled">
+            <p class="page-link">{{ index }}</p>
+          </div>
+        </li>
+      </ul>
+    </nav>
+    <div class="movie-container" v-for="movie in allMovies.data" :key="movie.id">
       <router-link :to="{ name: 'single-movie', params: { id: movie.id } }">
         <h4>{{ movie.title }}</h4>
       </router-link>
       <img class="movie-image" :src="movie.image_url" :alt="movie.title" />
-      <p class="movie-description">{{ movie.description | shortDescription }}</p>
+      <p class="movie-description">
+        {{ movie.description | shortDescription }}
+        <router-link :to="{ name: 'single-movie', params: { id: movie.id } }">
+          <i>read more</i>
+        </router-link>
+      </p>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Movies",
   created() {
-    this.$store.dispatch("fetchAllMovies");
+    this.$store.dispatch("fetchAllMovies", 1);
   },
   computed: {
     ...mapGetters({
       allMovies: "allMovies"
-    })
+    }),
+    firstPage() {
+      return this.allMovies.first_page;
+    },
+    lastPage() {
+      return this.allMovies.last_page;
+    },
+    currentPage() {
+      return this.allMovies.current_page;
+    }
   },
   filters: {
     shortDescription(description) {
       return description.substr(0, 80) + "...";
+    }
+  },
+  methods: {
+    ...mapActions({
+      fetchAllMovies: "fetchAllMovies"
+    }),
+    goNextPage() {
+      if (this.currentPage == this.lastPage) {
+        return;
+      } else {
+        this.fetchAllMovies(this.currentPage + 1);
+      }
+    },
+    goPreviousPage() {
+      if (this.currentPage == 1) {
+        return;
+      } else {
+        this.fetchAllMovies(this.currentPage - 1);
+      }
+    },
+    goLastPage() {
+      if (this.currentPage == this.lastPage) {
+        return;
+      } else {
+        this.fetchAllMovies(this.lastPage);
+      }
     }
   }
 };
@@ -47,5 +119,9 @@ export default {
 
 .movie-description {
   margin-top: 20px;
+}
+
+.pagination { 
+  margin-top: 5vw;
 }
 </style>

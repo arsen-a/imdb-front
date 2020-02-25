@@ -1,8 +1,8 @@
 import { HttpService } from "./HttpService";
 
 class MovieService extends HttpService {
-  getAll() {
-    return this.axios.get("/movies");
+  getAllPaginated(page) {
+    return this.axios.get(`/movies?page=${page}`);
   }
 
   getSingle(id) {

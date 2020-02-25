@@ -2,7 +2,7 @@ import { movieService } from "../../services/MovieService";
 
 export const MovieStoreModule = {
   state: {
-    allMovies: null,
+    allMovies: [],
     singleMovie: {}
   },
   mutations: {
@@ -14,8 +14,8 @@ export const MovieStoreModule = {
     }
   },
   actions: {
-    fetchAllMovies(context) {
-      movieService.getAll().then(r => {
+    fetchAllMovies(context, page) {
+      movieService.getAllPaginated(page).then(r => {
         context.commit("setAllMovies", r.data);
       });
     },
