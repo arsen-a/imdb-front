@@ -1,10 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
-import { store } from '../store'
+import { store } from "../store";
 
 import Movies from "../components/Movies.vue";
 import Register from "../components/auth/Register.vue";
 import Login from "../components/auth/Login.vue";
+import SingleMovie from "../components/SingleMovie.vue";
 
 Vue.use(Router);
 
@@ -31,6 +32,14 @@ const routes = [
     component: Login,
     meta: {
       guest: true
+    }
+  },
+  {
+    path: "/movies/:id",
+    name: "single-movie",
+    component: SingleMovie,
+    meta: {
+      guest: false
     }
   }
 ];
