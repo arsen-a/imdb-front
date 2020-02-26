@@ -10,4 +10,4 @@ class AuthService extends HttpService {
   }
 }
 
-export const authService = new AuthService()
+export const authService = new AuthService();

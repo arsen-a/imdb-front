@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <div class="movie-container" v-for="movie in allMovies" :key="movie.id">
-      <h3>{{ movie.title }}</h3>
-      <img class="movie-image" :src="movie.image_url" :alt="movie.title">
-      <p>
-        {{ movie.description | shortDescription }}
-      </p>
+      <router-link :to="{ name: 'single-movie', params: { id: movie.id } }">
+        <h4>{{ movie.title }}</h4>
+      </router-link>
+      <img class="movie-image" :src="movie.image_url" :alt="movie.title" />
+      <p class="movie-description">{{ movie.description | shortDescription }}</p>
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
   },
   filters: {
     shortDescription(description) {
-      return description.substr(0, 50) + '...';
+      return description.substr(0, 80) + "...";
     }
   }
 };
@@ -37,10 +37,15 @@ export default {
   border: 1px solid rgb(226, 226, 226);
   border-radius: 3px;
   padding: 10px;
-  margin: 14px 0 14px 0;
+  margin: 20px 0 14px 0;
+  max-width: 70vw;
 }
 
 .movie-image {
   max-height: 150px;
+}
+
+.movie-description {
+  margin-top: 20px;
 }
 </style>
