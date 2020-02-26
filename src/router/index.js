@@ -49,13 +49,7 @@ router.beforeEach((to, from, next) => {
     });
   }
 
-  if (to.name === "login" && isUserLoggedIn) {
-    return next({
-      name: "home"
-    });
-  }
-
-  if (to.name === "register" && isUserLoggedIn) {
+  if ((to.name === "login" && isUserLoggedIn) || (to.name === "register" && isUserLoggedIn)) {
     return next({
       name: "home"
     });
