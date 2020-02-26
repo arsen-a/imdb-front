@@ -1,6 +1,6 @@
 import { movieService } from "../../services/MovieService";
 
-export const MovieStoreModule = {
+export const MovieModule = {
   state: {
     allMovies: [],
     singleMovie: {}
@@ -14,15 +14,15 @@ export const MovieStoreModule = {
     }
   },
   actions: {
-    fetchAllMovies(context, page) {
-      movieService.getAllPaginated(page).then(r => {
-        context.commit("setAllMovies", r.data);
-      });
+    async fetchAllMovies(context, page) {
+      var response = await movieService.getAllPaginated(page);
+      context.commit("setAllMovies", response.data);
+      return response;
     },
-    fetchSingleMovie(context, id) {
-      movieService.getSingle(id).then(r => {
-        context.commit("setSingleMovie", r.data);
-      });
+    async fetchSingleMovie(context, id) {
+      var response = await movieService.getSingle(id);
+      context.commit("setSingleMovie", response.data);
+      return response;
     }
   },
   getters: {

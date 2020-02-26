@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { AuthStoreModule } from './modules/AuthStoreModule'
-import { MovieStoreModule } from './modules/MovieStoreModule'
+import { AuthModule } from './modules/AuthModule'
+import { MovieModule } from './modules/MovieModule'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     modules: {
-        AuthStoreModule,
-        MovieStoreModule
+        AuthModule,
+        MovieModule
     }
 })

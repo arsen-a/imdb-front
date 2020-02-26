@@ -1,6 +1,6 @@
 import { authService } from "../../services/AuthService";
 
-export const AuthStoreModule = {
+export const AuthModule = {
   state: {
     token: localStorage.getItem("token"),
     registerErrors: [],
