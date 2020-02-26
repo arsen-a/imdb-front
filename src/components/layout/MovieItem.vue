@@ -41,7 +41,7 @@ export default {
   border-radius: 3px;
   margin: 20px 0 14px 0;
   max-width: 70vw;
-  height: 250px;
+  height: auto;
 }
 
 .movie-title {
