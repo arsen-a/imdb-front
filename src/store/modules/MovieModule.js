@@ -1,6 +1,6 @@
 import { movieService } from "../../services/MovieService";
 
-export const MovieStoreModule = {
+export const MovieModule = {
   state: {
     allMovies: [],
     singleMovie: {}
