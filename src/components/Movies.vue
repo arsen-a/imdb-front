@@ -34,13 +34,13 @@
     </nav>
     <div class="movie-container" v-for="movie in allMovies.data" :key="movie.id">
       <router-link :to="{ name: 'single-movie', params: { id: movie.id } }">
-        <h4>{{ movie.title }}</h4>
+        <h4 class="movie-title">{{ movie.title }}</h4>
       </router-link>
       <img class="movie-image" :src="movie.image_url" :alt="movie.title" />
       <p class="movie-description">
         {{ movie.description | shortDescription }}
         <router-link :to="{ name: 'single-movie', params: { id: movie.id } }">
-          <i>read more</i>
+          <i>show more</i>
         </router-link>
       </p>
     </div>
@@ -106,22 +106,34 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .movie-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
   border: 1px solid rgb(226, 226, 226);
   border-radius: 3px;
-  padding: 10px;
   margin: 20px 0 14px 0;
   max-width: 70vw;
+  height: 250px;
+}
+
+.movie-title {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .movie-image {
+  margin: auto 20px;
   max-height: 150px;
 }
 
 .movie-description {
+  margin-left: 20px;
   margin-top: 20px;
 }
 
-.pagination { 
+.pagination {
   margin-top: 5vw;
 }
 </style>
