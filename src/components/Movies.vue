@@ -2,6 +2,18 @@
   <div class="container">
     <div v-if="allMovies.data">
       <MoviesSearch @search-movie="searchMovies" />
+      <div class="card">
+        <div v-for="genre in genres" :key="genre.id">
+          <input
+            type="checkbox"
+            @change="searchMovies(toSearch)"
+            :name="genre.name"
+            :value="genre.id"
+            v-model="genreSelected"
+          />
+          <label class="card-text" :for="genre.name">{{ genre.name }}</label>
+        </div>
+      </div>
       <MoviePagination
         :firstPage="firstPage"
         :lastPage="lastPage"
@@ -24,6 +36,7 @@ import { mapGetters, mapActions } from "vuex";
 import MovieItem from "./layout/MovieItem";
 import MoviePagination from "./layout/MoviesPagination";
 import MoviesSearch from "./layout/MoviesSearch";
+import { paginationMixin } from "../mixins/Pagination";
 
 export default {
   name: "Movies",
@@ -32,26 +45,21 @@ export default {
     MoviePagination,
     MoviesSearch
   },
+  mixins: [paginationMixin],
   created() {
     this.$store.dispatch("fetchAllMovies", { page: 1, searchTerm: "" });
+    this.$store.dispatch("fetchGenres");
   },
   computed: {
     ...mapGetters({
-      allMovies: "allMovies"
-    }),
-    firstPage() {
-      return this.allMovies.first_page;
-    },
-    lastPage() {
-      return this.allMovies.last_page;
-    },
-    currentPage() {
-      return this.allMovies.current_page;
-    }
+      allMovies: "allMovies",
+      genres: "genres"
+    })
   },
   data() {
     return {
-      toSearch: ""
+      toSearch: "",
+      genreSelected: []
     };
   },
   methods: {
@@ -60,40 +68,28 @@ export default {
     }),
     searchMovies(searchTerm) {
       this.toSearch = searchTerm;
-      this.fetchAllMovies({ page: 1, searchTerm: searchTerm });
-    },
-    goNextPage() {
-      if (this.currentPage == this.lastPage) {
-        return;
-      }
-      // if (this.hasSearchTerm) {
-      //   this.fetchAllMovies({ page: this.currentPage + 1, searchTerm: this.toSearch });
-      // }
       this.fetchAllMovies({
-        page: this.currentPage + 1,
-        searchTerm: this.toSearch
+        page: 1,
+        searchTerm: searchTerm,
+        genre: this.genreSelected
       });
-    },
-    goPreviousPage() {
-      if (this.currentPage == 1) {
-        return;
-      } else {
-        this.fetchAllMovies({
-          page: this.currentPage - 1,
-          searchTerm: this.toSearch
-        });
-      }
-    },
-    goLastPage() {
-      if (this.currentPage == this.lastPage) {
-        return;
-      } else {
-        this.fetchAllMovies({ page: this.lastPage, searchTerm: this.toSearch });
-      }
-    },
-    goPageNum(page) {
-      this.fetchAllMovies({ page: page, searchTerm: this.toSearch });
     }
   }
 };
 </script>
+
+<style scoped>
+.card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 30vw;
+  padding: 8px;
+  margin-top: 2vw;
+}
+
+.card-text {
+  margin-left: 5px;
+  margin-right: 10px;
+}
+</style>

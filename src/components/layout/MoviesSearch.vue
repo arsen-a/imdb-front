@@ -3,7 +3,7 @@
     <div class="movies-search">
       <input
         class="form-control"
-        placeholder="Search movies..."
+        placeholder="Type to search..."
         v-model="searchTerm"
         @keyup="searchMovie"
         type="text"

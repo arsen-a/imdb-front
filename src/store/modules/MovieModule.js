@@ -3,7 +3,8 @@ import { movieService } from "../../services/MovieService";
 export const MovieModule = {
   state: {
     allMovies: [],
-    singleMovie: {}
+    singleMovie: {},
+    genres: []
   },
   mutations: {
     setAllMovies(state, movies) {
@@ -11,18 +12,26 @@ export const MovieModule = {
     },
     setSingleMovie(state, movie) {
       state.singleMovie = movie;
+    },
+    setGenres(state, genres) {
+      state.genres = genres;
     }
   },
   actions: {
-    fetchAllMovies({ commit }, { page, searchTerm = "" }) {
-      movieService.getAllPaginated(page, searchTerm).then(response => {
+    fetchAllMovies({ commit }, { page, searchTerm = "", genre = [] }) {
+      movieService.getAllPaginated(page, searchTerm, genre).then(response => {
         commit("setAllMovies", response.data);
       });
     },
+    async fetchGenres({ commit }) {
+      var response = await movieService.getGenres();
+      commit("setGenres", response.data);
+    },
     async fetchSingleMovie(context, id) {
-      var response = await movieService.getSingle(id);
-      context.commit("setSingleMovie", response.data);
-      return response;
+      movieService.getSingle(id).then(response => {
+        context.commit("setSingleMovie", response.data);
+        return response;
+      });
     }
   },
   getters: {
@@ -31,6 +40,9 @@ export const MovieModule = {
     },
     singleMovie(state) {
       return state.singleMovie;
+    },
+    genres(state) {
+      return state.genres;
     }
   }
 };
