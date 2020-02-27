@@ -14,10 +14,10 @@ export const MovieModule = {
     }
   },
   actions: {
-    async fetchAllMovies(context, page) {
-      var response = await movieService.getAllPaginated(page);
-      context.commit("setAllMovies", response.data);
-      return response;
+    fetchAllMovies({ commit }, { page, searchTerm = "" }) {
+      movieService.getAllPaginated(page, searchTerm).then(response => {
+        commit("setAllMovies", response.data);
+      });
     },
     async fetchSingleMovie(context, id) {
       var response = await movieService.getSingle(id);

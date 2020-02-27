@@ -68,6 +68,6 @@ export default {
 
 <style scoped>
 .pagination {
-  margin-top: 5vw;
+  margin-top: 3vw;
 }
 </style>
