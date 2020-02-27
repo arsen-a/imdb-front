@@ -11,6 +11,14 @@
           <i>show more</i>
         </router-link>
       </p>
+      <div class="d-flex ml-3">
+        <p class="likes">Likes:</p>
+        <span>{{ movie.likes }}</span>
+      </div>
+      <div class="d-flex ml-3">
+        <p class="dislikes">Dislikes:</p>
+        <span>{{ movie.dislikes }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -58,5 +66,15 @@ export default {
 .movie-description {
   margin-left: 20px;
   margin-top: 20px;
+}
+
+.likes {
+  color: green;
+  margin-right: 5px;
+}
+
+.dislikes {
+  color: red;
+  margin-right: 5px;
 }
 </style>

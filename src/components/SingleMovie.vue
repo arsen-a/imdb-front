@@ -10,6 +10,22 @@
         </p>
       </div>
       <p class="movie-description">{{ singleMovie.description }}</p>
+      <div class="like-dislike-container">
+        <div class="d-flex justify-content-between mt-3">
+          <div class="d-flex align-items-center">
+            <p class="likes m-0 mr-2 p-0">Likes:</p>
+            <span>{{ singleMovie.likes }}</span>
+          </div>
+          <button type="button" class="btn btn-success">Like</button>
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+          <div class="d-flex align-items-center">
+            <p class="dislikes m-0 mr-2 p-0">Dislikes:</p>
+            <span>{{ singleMovie.dislikes }}</span>
+          </div>
+          <button type="button" class="btn btn-danger">Dislike</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -58,5 +74,17 @@ export default {
   margin-top: 20px;
   margin-bottom: 40px;
   max-width: 60vw;
+}
+
+.like-dislike-container {
+  width: 200px;
+}
+
+.likes {
+  color: green;
+}
+
+.dislikes {
+  color: red;
 }
 </style>
