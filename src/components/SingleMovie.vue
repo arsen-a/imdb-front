@@ -48,13 +48,26 @@
             <strong>Add comment</strong>
           </button>
         </form>
-        <ul class="list-group" v-if="singleMovie.comments && singleMovie.comments.length > 0">
-          <li
-            class="comment-body list-group-item"
-            v-for="comment in singleMovie.comments"
-            :key="comment.id"
-          >{{ comment.content }}</li>
-        </ul>
+        <div v-if="singleMovieComments && singleMovieComments.length > 0">
+          <ul class="list-group">
+            <li
+              class="comment-body list-group-item"
+              v-for="comment in singleMovieComments"
+              :key="comment.id"
+            >{{ comment.content }}</li>
+          </ul>
+          <button
+            v-if="this.currentPage !== this.singleMovie.comments.last_page"
+            class="btn btn-primary mt-2"
+            type="button"
+            @click="loadMore"
+          >
+            <strong>Load More</strong>
+          </button>
+          <button v-else class="btn btn-primary mt-2" disabled type="button" @click="loadMore">
+            <strong>No more..</strong>
+          </button>
+        </div>
         <h4 v-else class="alert alert-danger">No comments.</h4>
       </div>
     </div>
@@ -71,7 +84,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      singleMovie: "singleMovie"
+      singleMovie: "singleMovie",
+      singleMovieComments: "singleMovieComments"
     }),
     genres() {
       return this.singleMovie.genres;
@@ -79,14 +93,16 @@ export default {
   },
   data() {
     return {
-      newComment: ""
+      newComment: "",
+      currentPage: 1
     };
   },
   methods: {
     ...mapActions({
       reactToMovie: "reactToMovie",
       addComment: "addComment",
-      fetchSingleMovie: "fetchSingleMovie"
+      fetchSingleMovie: "fetchSingleMovie",
+      loadMoreComments: "loadMoreComments"
     }),
     like() {
       this.reactToMovie({ movie_id: this.$route.params.id, reaction: "like" });
@@ -108,6 +124,16 @@ export default {
         .then(() => {
           this.newComment = "";
         });
+    },
+    loadMore() {
+      if (this.currentPage == this.singleMovie.comments.last_page) {
+        return;
+      }
+      this.loadMoreComments({
+        mId: this.singleMovie.id,
+        page: this.currentPage + 1
+      })
+      this.currentPage++;
     }
   }
 };
