@@ -32,6 +32,11 @@ export const MovieModule = {
         context.commit("setSingleMovie", response.data);
         return response;
       });
+    },
+    async reactToMovie(context, reaction) {
+      var response = await movieService.reactToMovie(reaction);
+      alert(response.data.message);
+      return response.data;
     }
   },
   getters: {

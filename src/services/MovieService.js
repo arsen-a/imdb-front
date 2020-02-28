@@ -26,6 +26,11 @@ class MovieService extends HttpService {
   getGenres() {
     return this.axios.get("/genres");
   }
+
+  reactToMovie(reaction) {
+    console.log(reaction)
+    return this.axios.post("/movies/reactions", reaction);
+  }
 }
 
 export const movieService = new MovieService();

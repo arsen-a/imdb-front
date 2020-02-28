@@ -3,6 +3,7 @@ import { authService } from "../../services/AuthService";
 export const AuthModule = {
   state: {
     token: localStorage.getItem("token"),
+    userId: null,
     registerErrors: [],
     loginErrors: null
   },
@@ -15,6 +16,9 @@ export const AuthModule = {
     },
     setLoginErrors(state, errors) {
       state.loginErrors = errors;
+    },
+    setUserId(state, id) {
+      state.userId = id;
     }
   },
   actions: {
@@ -36,8 +40,10 @@ export const AuthModule = {
           Authorization: `Bearer ${response.data.token}`
         });
         context.commit("setToken", response.data.token);
+        context.commit("setUserId", response.data.user_id);
         context.commit("setLoginErrors", null);
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user_id", response.data.user_id);
         return response;
       } catch (exception) {
         if (exception.response.data && exception.response.data.error) {
@@ -59,6 +65,9 @@ export const AuthModule = {
     },
     loginErrors(state) {
       return state.loginErrors;
+    },
+    userId(state) {
+      return state.userId;
     }
   }
 };
