@@ -26,6 +26,10 @@
           <button @click="dislike" type="button" class="btn btn-danger">Dislike</button>
         </div>
       </div>
+      <div class="d-flex flex-row mt-3">
+        <p>Visit count:</p>
+        <span class="ml-2">{{ singleMovie.visit_count }}</span>
+      </div>
     </div>
   </div>
 </template>
