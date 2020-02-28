@@ -28,8 +28,11 @@ class MovieService extends HttpService {
   }
 
   reactToMovie(reaction) {
-    console.log(reaction)
     return this.axios.post("/movies/reactions", reaction);
+  }
+
+  storeComment(data) {
+    return this.axios.post("/comments", data);
   }
 }
 
