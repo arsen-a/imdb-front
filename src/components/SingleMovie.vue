@@ -1,7 +1,23 @@
 <template>
   <div class="container">
     <div class="movie">
-      <h1 class="movie-title">{{ singleMovie.title }}</h1>
+      <div class="d-flex flex-row align-items-center">
+        <h1 class="movie-title">{{ singleMovie.title }}</h1>
+        <div class="ml-3 mb-5">
+          <button
+            class="btn btn-success"
+            @click="handleWatchlistClick"
+            type="button"
+            v-if="!hasWatched"
+          >Mark as watched</button>
+          <button
+            class="btn btn-danger"
+            @click="handleWatchlistClick"
+            type="button"
+            v-else
+          >Mark as not watched</button>
+        </div>
+      </div>
       <img class="movie-image" :src="singleMovie.image_url" :alt="singleMovie.title" />
       <div class="movie-genre" v-if="singleMovie.genres">
         <p>Genre:</p>
@@ -79,8 +95,10 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "SingleMovie",
-  created() {
-    this.$store.dispatch("fetchSingleMovie", this.$route.params.id);
+  async created() {
+    const response = await this.fetchSingleMovie(this.$route.params.id);
+    console.log(response.data.watched);
+    this.hasWatched = response.data.watched;
   },
   computed: {
     ...mapGetters({
@@ -94,7 +112,8 @@ export default {
   data() {
     return {
       newComment: "",
-      currentPage: 1
+      currentPage: 1,
+      hasWatched: false
     };
   },
   methods: {
@@ -102,7 +121,8 @@ export default {
       reactToMovie: "reactToMovie",
       addComment: "addComment",
       fetchSingleMovie: "fetchSingleMovie",
-      loadMoreComments: "loadMoreComments"
+      loadMoreComments: "loadMoreComments",
+      handleWatchMark: "handleWatchMark"
     }),
     like() {
       this.reactToMovie({ movie_id: this.$route.params.id, reaction: "like" });
@@ -132,8 +152,13 @@ export default {
       this.loadMoreComments({
         mId: this.singleMovie.id,
         page: this.currentPage + 1
-      })
+      });
       this.currentPage++;
+    },
+    handleWatchlistClick() {
+      this.handleWatchMark(this.$route.params.id).then(r => {
+        this.hasWatched = r.data.watched;
+      });
     }
   }
 };

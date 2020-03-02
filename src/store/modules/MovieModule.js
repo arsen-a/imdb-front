@@ -35,15 +35,17 @@ export const MovieModule = {
       commit("setGenres", response.data);
     },
     async fetchSingleMovie(context, id) {
-      movieService.getSingle(id).then(response => {
-        context.commit("setSingleMovie", response.data);
-        context.commit("setSingleMovieComments", response.data.comments.data);
-        return response;
-      });
+      const response = await movieService.getSingle(id);
+      context.commit("setSingleMovie", response.data.movie);
+      context.commit(
+        "setSingleMovieComments",
+        response.data.movie.comments.data
+      );
+      return response;
     },
-    async loadMoreComments({ commit }, { mId, page}) {
+    async loadMoreComments({ commit }, { mId, page }) {
       movieService.loadMoreComments(mId, page).then(response => {
-        commit("pushMoreComments", response.data.comments.data);
+        commit("pushMoreComments", response.data.movie.comments.data);
       });
     },
     async reactToMovie(context, reaction) {
@@ -53,6 +55,10 @@ export const MovieModule = {
     },
     async addComment(context, data) {
       var response = await movieService.storeComment(data);
+      return response;
+    },
+    async handleWatchMark(context, mId) {
+      const response = await movieService.handleWatchlist(mId);
       return response;
     }
   },
