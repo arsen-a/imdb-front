@@ -3,9 +3,9 @@
     <div class="movie">
       <h1 class="movie-title">{{ singleMovie.title }}</h1>
       <img class="movie-image" :src="singleMovie.image_url" :alt="singleMovie.title" />
-      <div class="movie-genre" v-if="singleMovie.genre">
+      <div class="movie-genre" v-if="singleMovie.genres">
         <p>Genre:</p>
-        <p class="ml-2" v-for="genre in singleMovie.genre" :key="genre.id">
+        <p class="ml-2" v-for="genre in genres" :key="genre.id">
           <i>{{ genre.name }}</i>
         </p>
       </div>
@@ -25,7 +25,10 @@ export default {
   computed: {
     ...mapGetters({
       singleMovie: "singleMovie"
-    })
+    }),
+    genres() {
+      return this.singleMovie.genres;
+    }
   }
 };
 </script>
