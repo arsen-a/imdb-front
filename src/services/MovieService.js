@@ -53,6 +53,10 @@ class MovieService extends HttpService {
     };
     return this.axios.post(`/movies/related`, genres);
   }
+
+  createMovie(movie) {
+    return this.axios.post("/movies", movie);
+  }
 }
 
 export const movieService = new MovieService();

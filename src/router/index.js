@@ -6,6 +6,7 @@ import Movies from "../components/Movies.vue";
 import Register from "../components/auth/Register.vue";
 import Login from "../components/auth/Login.vue";
 import SingleMovie from "../components/SingleMovie.vue";
+import CreateMovie from "../components/CreateMovie.vue";
 
 Vue.use(Router);
 
@@ -41,6 +42,14 @@ const routes = [
     meta: {
       guest: false
     }
+  },
+  {
+    path: "/new-movie",
+    name: "create-movie",
+    component: CreateMovie,
+    meta: {
+      guest: false
+    }
   }
 ];
 
@@ -58,7 +67,10 @@ router.beforeEach((to, from, next) => {
     });
   }
 
-  if ((to.name === "login" && isUserLoggedIn) || (to.name === "register" && isUserLoggedIn)) {
+  if (
+    (to.name === "login" && isUserLoggedIn) ||
+    (to.name === "register" && isUserLoggedIn)
+  ) {
     return next({
       name: "home"
     });

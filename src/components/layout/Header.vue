@@ -30,6 +30,9 @@
           <li v-if="isUserLoggedIn" class="nav-item">
             <a class="nav-link" href="#" @click.prevent="logoutUser()">Logout</a>
           </li>
+          <li v-if="isUserLoggedIn" class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'create-movie' }">Create Movie</router-link>
+          </li>
         </ul>
       </div>
     </nav>
