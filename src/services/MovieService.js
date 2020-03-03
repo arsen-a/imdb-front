@@ -38,6 +38,10 @@ class MovieService extends HttpService {
   loadMoreComments(mId, page) {
     return this.axios.get(`/movies/${mId}?page=${page}`);
   }
+
+  handleWatchlist(mId) {
+    return this.axios.post("/movies/watchlist", { movie_id: mId });
+  }
 }
 
 export const movieService = new MovieService();
