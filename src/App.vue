@@ -4,7 +4,10 @@
       <Header />
     </header>
     <main>
-      <router-view />
+      <div class="container d-flex flex-row justify-content-between">
+        <router-view />
+        <Sidebar v-if="$route.name == 'home'" class="sidebar" />
+      </div>
     </main>
     <footer>
       <Footer />
@@ -15,12 +18,14 @@
 <script>
 import Header from "./components/layout/Header.vue";
 import Footer from "./components/layout/Footer.vue";
+import Sidebar from "./components/layout/Sidebar.vue";
 
 export default {
   name: "App",
   components: {
     Header,
-    Footer
+    Footer,
+    Sidebar
   }
 };
 </script>
@@ -30,5 +35,9 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.sidebar {
+  width: 20vw;
 }
 </style>

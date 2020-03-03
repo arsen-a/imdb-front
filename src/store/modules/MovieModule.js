@@ -5,7 +5,8 @@ export const MovieModule = {
     allMovies: [],
     singleMovie: {},
     genres: [],
-    singleMovieComments: []
+    singleMovieComments: [],
+    popularMovies: []
   },
   mutations: {
     setAllMovies(state, movies) {
@@ -22,6 +23,9 @@ export const MovieModule = {
     },
     pushMoreComments(state, comments) {
       state.singleMovieComments.push(...comments);
+    },
+    setPopularMovies(state, movies) {
+      state.popularMovies = movies
     }
   },
   actions: {
@@ -29,6 +33,10 @@ export const MovieModule = {
       movieService.getAllPaginated(page, searchTerm, genre).then(response => {
         commit("setAllMovies", response.data);
       });
+    },
+    async fetchPopularMovies({ commit }) {
+      var response = await movieService.getPopularMovies()
+      commit("setPopularMovies", response.data)
     },
     async fetchGenres({ commit }) {
       var response = await movieService.getGenres();
@@ -74,6 +82,9 @@ export const MovieModule = {
     },
     singleMovieComments(state) {
       return state.singleMovieComments;
+    },
+    popularMovies(state) {
+      return state.popularMovies
     }
   }
 };
