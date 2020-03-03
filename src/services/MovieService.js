@@ -34,6 +34,10 @@ class MovieService extends HttpService {
   storeComment(data) {
     return this.axios.post("/comments", data);
   }
+
+  loadMoreComments(mId, page) {
+    return this.axios.get(`/movies/${mId}?page=${page}`);
+  }
 }
 
 export const movieService = new MovieService();
