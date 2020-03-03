@@ -46,6 +46,13 @@ class MovieService extends HttpService {
   getPopularMovies() {
     return this.axios.get("/movies?popular=true");
   }
+
+  getRelatedMovies(genresArr) {
+    var genres = {
+      genres: genresArr
+    };
+    return this.axios.post(`/movies/related`, genres);
+  }
 }
 
 export const movieService = new MovieService();
