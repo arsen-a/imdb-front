@@ -1,5 +1,5 @@
 <template>
-  <div class="container d-flex">
+  <div class="container d-flex justify-content-between">
     <div class="movie">
       <div class="d-flex flex-row align-items-center">
         <h1 class="movie-title">{{ singleMovie.title }}</h1>
