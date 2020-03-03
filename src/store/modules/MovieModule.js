@@ -6,7 +6,8 @@ export const MovieModule = {
     singleMovie: {},
     genres: [],
     singleMovieComments: [],
-    popularMovies: []
+    popularMovies: [],
+    relatedMovies: []
   },
   mutations: {
     setAllMovies(state, movies) {
@@ -25,7 +26,10 @@ export const MovieModule = {
       state.singleMovieComments.push(...comments);
     },
     setPopularMovies(state, movies) {
-      state.popularMovies = movies
+      state.popularMovies = movies;
+    },
+    setRelatedMovies(state, movies) {
+      state.relatedMovies = movies;
     }
   },
   actions: {
@@ -35,8 +39,15 @@ export const MovieModule = {
       });
     },
     async fetchPopularMovies({ commit }) {
-      var response = await movieService.getPopularMovies()
-      commit("setPopularMovies", response.data)
+      var response = await movieService.getPopularMovies();
+      commit("setPopularMovies", response.data);
+    },
+    async fetchRelatedMovies({ commit }, genres) {
+      var filtered = genres.map(e => {
+        return e.name;
+      });
+      var response = await movieService.getRelatedMovies(filtered);
+      commit("setRelatedMovies", response.data);
     },
     async fetchGenres({ commit }) {
       var response = await movieService.getGenres();
@@ -84,7 +95,10 @@ export const MovieModule = {
       return state.singleMovieComments;
     },
     popularMovies(state) {
-      return state.popularMovies
+      return state.popularMovies;
+    },
+    relatedMovies(state) {
+      return state.relatedMovies;
     }
   }
 };
