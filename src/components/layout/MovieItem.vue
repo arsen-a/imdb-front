@@ -19,6 +19,10 @@
         <p class="dislikes">Dislikes:</p>
         <span>{{ movie.dislikes }}</span>
       </div>
+      <div class="d-flex ml-3">
+        <p>Visited:</p>
+        <span class="ml-2">{{ movie.visit_count }} times</span>
+      </div>
     </div>
   </div>
 </template>
