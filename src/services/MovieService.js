@@ -42,6 +42,10 @@ class MovieService extends HttpService {
   handleWatchlist(mId) {
     return this.axios.post("/movies/watchlist", { movie_id: mId });
   }
+
+  getPopularMovies() {
+    return this.axios.get("/movies?popular=true");
+  }
 }
 
 export const movieService = new MovieService();

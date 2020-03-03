@@ -97,7 +97,6 @@ export default {
   name: "SingleMovie",
   async created() {
     const response = await this.fetchSingleMovie(this.$route.params.id);
-    console.log(response.data.watched);
     this.hasWatched = response.data.watched;
   },
   computed: {
