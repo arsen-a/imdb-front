@@ -126,8 +126,8 @@ export default {
           description: response.data.Plot,
           image_url: response.data.Poster,
           genres: [
-            Math.floor(Math.random() * 11),
-            Math.floor(Math.random() * 11)
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1
           ],
           omdb: true
         });
