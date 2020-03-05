@@ -11,7 +11,11 @@ export const MovieModule = {
   },
   mutations: {
     setAllMovies(state, movies) {
-      state.allMovies = movies;
+      if (movies.elastic === true) {
+        state.allMovies.data = movies.data;
+      } else {
+        state.allMovies = movies.data;
+      }
     },
     setSingleMovie(state, movie) {
       state.singleMovie = movie;
@@ -33,10 +37,22 @@ export const MovieModule = {
     }
   },
   actions: {
-    fetchAllMovies({ commit }, { page, searchTerm = "", genre = [] }) {
-      movieService.getAllPaginated(page, searchTerm, genre).then(response => {
-        commit("setAllMovies", response.data);
-      });
+    async fetchAllMovies(
+      { commit },
+      { page, searchTerm = "", genre = [], elastic = "off" }
+    ) {
+      var response = await movieService.getAllPaginated(
+        page,
+        searchTerm,
+        genre,
+        elastic
+      );
+      if (response.data.elastic === true) {
+        commit("setAllMovies", { data: response.data.movies, elastic: true });
+        return response;
+      }
+      commit("setAllMovies", { data: response.data, elastic: false });
+      return response;
     },
     async fetchPopularMovies({ commit }) {
       var response = await movieService.getPopularMovies();

@@ -1,8 +1,8 @@
 <template>
   <div class="container">
+    <MoviesSearch @change-elastic="changeElastic" @search-movie="searchMovies" />
     <div v-if="allMovies.data">
-      <MoviesSearch @search-movie="searchMovies" />
-      <div class="card">
+      <div v-if="!useElastic" class="card">
         <div v-for="genre in genres" :key="genre.id">
           <input
             type="checkbox"
@@ -59,7 +59,8 @@ export default {
   data() {
     return {
       toSearch: "",
-      genreSelected: []
+      genreSelected: [],
+      useElastic: false
     };
   },
   methods: {
@@ -68,11 +69,24 @@ export default {
     }),
     searchMovies(searchTerm) {
       this.toSearch = searchTerm;
+      if (this.useElastic) {
+        this.fetchAllMovies({
+          page: 1,
+          searchTerm: searchTerm,
+          genre: [],
+          elastic: "on"
+        });
+        return;
+      }
       this.fetchAllMovies({
         page: 1,
         searchTerm: searchTerm,
-        genre: this.genreSelected
+        genre: this.genreSelected,
+        elastic: "off"
       });
+    },
+    changeElastic(bool) {
+      this.useElastic = bool;
     }
   }
 };
