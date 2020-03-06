@@ -15,6 +15,7 @@
         </div>
       </div>
       <MoviePagination
+        v-if="!useElastic"
         :firstPage="firstPage"
         :lastPage="lastPage"
         :currentPage="currentPage"
