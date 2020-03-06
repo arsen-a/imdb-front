@@ -64,16 +64,29 @@
             <strong>Add comment</strong>
           </button>
         </form>
+        <div class="new-comments" v-if="newComments && newComments.length > 0">
+          <p class="alert alert-success mt-3 mb-3">
+            <strong>New Comments:</strong>
+          </p>
+          <ul class="list-group mb-3">
+            <li
+              class="comment-body list-group-item"
+              v-for="(comm, index) in newComments"
+              :key="index"
+            >{{ comm.content }}</li>
+          </ul>
+        </div>
         <div v-if="singleMovieComments && singleMovieComments.length > 0">
+          <p class="alert alert-success mt-3 mb-3">Comments:</p>
           <ul class="list-group">
             <li
               class="comment-body list-group-item"
-              v-for="comment in singleMovieComments"
-              :key="comment.id"
+              v-for="(comment, index) in singleMovieComments"
+              :key="index"
             >{{ comment.content }}</li>
           </ul>
           <button
-            v-if="this.currentPage !== this.singleMovie.comments.last_page"
+            v-if="currentPage !== singleMovie.comments.last_page"
             class="btn btn-primary mt-2"
             type="button"
             @click="loadMore"
@@ -94,6 +107,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import RelatedMovies from "../components/layout/RelatedMovies.vue";
+import Echo from "laravel-echo";
 
 export default {
   name: "SingleMovie",
@@ -104,6 +118,21 @@ export default {
     const response = await this.fetchSingleMovie(this.$route.params.id);
     this.hasWatched = response.data.watched;
     this.$store.dispatch("fetchRelatedMovies", this.genres);
+    window.Echo = new Echo({
+      broadcaster: "pusher",
+      key: "43d5bd514c4f6b4c9287",
+      cluster: "eu",
+      forceTLS: true
+    });
+    window.Echo.channel("comment").listen("CommentAdded", comment => {
+      this.newComments.push(comment.comment);
+    });
+    window.Echo.channel("likes").listen("MovieLiked", r => {
+      this.singleMovie.likes = r.movie.likes;
+    });
+    window.Echo.channel("dislikes").listen("MovieDisliked", r => {
+      this.singleMovie.dislikes = r.movie.dislikes;
+    });
   },
   computed: {
     ...mapGetters({
@@ -118,7 +147,8 @@ export default {
     return {
       newComment: "",
       currentPage: 1,
-      hasWatched: false
+      hasWatched: false,
+      newComments: []
     };
   },
   methods: {
@@ -142,13 +172,9 @@ export default {
       this.addComment({
         content: this.newComment,
         movie_id: this.singleMovie.id
-      })
-        .then(() => {
-          this.fetchSingleMovie(this.singleMovie.id);
-        })
-        .then(() => {
-          this.newComment = "";
-        });
+      }).then(() => {
+        this.newComment = "";
+      });
     },
     loadMore() {
       if (this.currentPage == this.singleMovie.comments.last_page) {

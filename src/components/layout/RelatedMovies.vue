@@ -6,7 +6,7 @@
       </p>
       <ul class="list-group">
         <li class="list-group-item" v-for="movie in relatedMovies" :key="movie.id">
-          <router-link :to="{ name: 'single-movie', params: { id: movie.id }}">{{ movie.title }}</router-link>
+          <router-link :to="{ name: 'single-movie', params: { id: movie.id } }">{{ movie.title }}</router-link>
         </li>
       </ul>
     </div>
@@ -30,5 +30,12 @@ export default {
 .related-movies {
   width: 20vw;
   margin-top: 20px;
+}
+.rel-button {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
 }
 </style>
