@@ -81,11 +81,11 @@ export const MovieModule = {
     async loadMoreComments({ commit }, { mId, page }) {
       movieService.loadMoreComments(mId, page).then(response => {
         commit("pushMoreComments", response.data.movie.comments.data);
+        commit("singleMovieLastPage", response.data.movie.comments.last_page);
       });
     },
     async reactToMovie(context, reaction) {
       var response = await movieService.reactToMovie(reaction);
-      alert(response.data.message);
       return response.data;
     },
     async addComment(context, data) {
