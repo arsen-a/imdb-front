@@ -1,22 +1,26 @@
 import { HttpService } from "./HttpService";
 
 class MovieService extends HttpService {
-  getAllPaginated(page, searchTerm, genre) {
+  getAllPaginated(page, searchTerm, genre, elastic = "off") {
     if (searchTerm.length && !genre.length) {
-      return this.axios.get(`/movies?page=${page}&search=${searchTerm}`);
+      return this.axios.get(
+        `/movies?page=${page}&search=${searchTerm}&elastic=${elastic}`
+      );
     }
 
     if (genre.length && !searchTerm.length) {
-      return this.axios.get(`/movies?page=${page}&genre=${genre}`);
+      return this.axios.get(
+        `/movies?page=${page}&genre=${genre}&elastic=${elastic}`
+      );
     }
 
     if (searchTerm.length && genre.length) {
       return this.axios.get(
-        `/movies?page=${page}&search=${searchTerm}&genre=${genre}`
+        `/movies?page=${page}&search=${searchTerm}&genre=${genre}&elastic=${elastic}`
       );
     }
 
-    return this.axios.get(`/movies?page=${page}`);
+    return this.axios.get(`/movies?page=${page}&elastic=${elastic}`);
   }
 
   getSingle(id) {
