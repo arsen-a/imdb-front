@@ -4,7 +4,11 @@
       <router-link :to="{ name: 'single-movie', params: { id: movie.id } }">
         <h4 class="movie-title">{{ movie.title }}</h4>
       </router-link>
-      <img class="movie-image" :src="movie.image_url" :alt="movie.title" />
+      <img v-if="movie.image"
+        class="movie-image"
+        :src="imgPreUrl + movie.image.full_size"
+        :alt="movie.title"
+      />
       <p class="movie-description">
         {{ movie.description | shortDescription }}
         <router-link :to="{ name: 'single-movie', params: { id: movie.id } }">
@@ -33,6 +37,11 @@ export default {
   props: {
     allMovies: {
       required: true
+    }
+  },
+  data() {
+    return {
+      imgPreUrl: 'http://localhost:8000/'
     }
   },
   filters: {

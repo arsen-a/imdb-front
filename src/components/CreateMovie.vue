@@ -33,15 +33,9 @@
           ></textarea>
         </div>
         <div class="form-group">
-          <label for="image">Image URL:</label>
-          <input
-            required
-            class="form-control"
-            type="url"
-            id="image"
-            name="image"
-            v-model="newMovie.image_url"
-          />
+          <label for="image">Image:</label>
+          <br />
+          <input type="file" accept="image/*" id="image-input" />
         </div>
         <div class="form-group">
           <p>
@@ -98,8 +92,14 @@ export default {
   },
   methods: {
     async submitMovie() {
+      var imgInput = document.querySelector("#image-input");
+      var formData = new FormData();
+      formData.append("title", this.newMovie.title);
+      formData.append("description", this.newMovie.description);
+      formData.append("image", imgInput.files[0]);
+      formData.append("genres", this.newMovie.genres);
       movieService
-        .createMovie(this.newMovie)
+        .createMovie(formData)
         .then(r => {
           alert(r.data.message);
         })
