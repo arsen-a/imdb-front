@@ -18,7 +18,12 @@
           >Mark as not watched</button>
         </div>
       </div>
-      <img class="movie-image" :src="singleMovie.image_url" :alt="singleMovie.title" />
+      <img
+        v-if="singleMovie.image"
+        class="movie-image"
+        :src="imgPreUrl + singleMovie.image.full_size"
+        :alt="singleMovie.title"
+      />
       <div class="movie-genre" v-if="singleMovie.genres">
         <p>Genre:</p>
         <p class="ml-2" v-for="genre in genres" :key="genre.id">
@@ -148,7 +153,8 @@ export default {
       newComment: "",
       currentPage: 1,
       hasWatched: false,
-      newComments: []
+      newComments: [],
+      imgPreUrl: "http://localhost:8000/"
     };
   },
   methods: {
